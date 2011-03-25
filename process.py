@@ -8,16 +8,14 @@ import subprocess
 import re
 class Process:
 
-    
-
-    def __init__(self,id,ram,cpu):
-        self.id = int(id)
+    def __init__(self,pid,ram,cpu):
+        self.pid = int(pid)
         self.ram = [ram]
         self.cpu = [cpu]
 
 #        print (self.cpu[-1],self.ram[-1])
     def getProcess(self):
-        return self.id,self
+        return self.pid,self
 
     def getRamArray(self):
         return self.ram
@@ -27,10 +25,10 @@ class Process:
         self.cpu.append(cpu)
 
     def getCpu(self):
-        
         return self.cpu
+
     def __str__(self):
-        return "process %s is using %s CPU and %s ram" % (self.id,self.cpu[-1],self.ram[-1])
+        return "process {0} is using {1} CPU and {2} ram".format(self.pid, self.cpu[-1], self.ram[-1])
 
     def __repr__(self):
         return self.__str__();

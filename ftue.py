@@ -12,17 +12,19 @@ import subprocess,re,time
 if __name__ == "__main__":
     processes = []
 
+    # Save output from 'ps auxwww'
     output = subprocess.check_output(["ps", "auxww"]).decode("utf-8")
+    # Save each line as list element
     outarr = output.split("\n")[1:-1]
 
     for i in outarr:
 #        print(i)
-        out = re.search(r"([a-z,A-Z,0-9]+)\s+(\d*)\s+(\d*.\d*)\s+(\d*.\d*)(.*)",i)
+        # SE1 = pid, SE2 = proc usage, SE3 = ram usage
+        out = re.search(r"([\w]+)\s+(\d*)\s+(\d*.\d*)\s+(\d*.\d*)(.*)",i)
 
         proc = process.Process(out.group(2),out.group(3),out.group(4)).getProcess()
         print (proc[0],proc[1])
         processes.insert(proc[0],proc[1])
-
 
     for i in range(0,40):
         output = subprocess.check_output(["ps", "auxww"]).decode("utf-8")
