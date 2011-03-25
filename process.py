@@ -34,4 +34,4 @@ class Process:
         return self.__str__();
 
 if __name__ == "__main__":
-    print("You've called process.py, please call ftue.py instead")
+    print("You've called process.py, please call procedente.py instead")
