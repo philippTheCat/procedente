@@ -20,7 +20,7 @@ class Process:
     def getRamArray(self):
         return self.ram
 
-    def addStat(self,ram="",cpu=""):
+    def addStat(self,cpu="",ram=""):
         self.ram.append(ram)
         self.cpu.append(cpu)
 
@@ -34,4 +34,4 @@ class Process:
         return self.__str__();
 
 if __name__ == "__main__":
-    print("got call to process.py ,call ftue.py instead")
+    print("You've called process.py, please call ftue.py instead")
