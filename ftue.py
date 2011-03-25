@@ -25,7 +25,7 @@ if __name__ == "__main__":
 
 
     for i in range(0,40):
-        utput = subprocess.check_output(["ps", "auxww"]).decode("utf-8")
+        output = subprocess.check_output(["ps", "auxww"]).decode("utf-8")
         outarr = output.split("\n")[1:-1]
 
         for j in outarr:
