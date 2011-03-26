@@ -1,3 +1,9 @@
+#!/usr/bin/env python
+
+__author__="pharno"
+__date__ ="$26.03.2011 23:00:00$"
+
+
 import subprocess
 
 # Directly taken from Py3k (and modified a bit:

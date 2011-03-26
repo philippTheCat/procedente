@@ -1,18 +1,18 @@
-#!/usr/bin/env python3
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
+#!/usr/bin/env python
 
 __author__="pharno"
 __date__ ="$23.03.2011 20:55:45$"
 
 import process
-import subprocess,re,time,os
+import re,time,os
+
+from helpers import *
 
 
 if __name__ == "__main__":
     processes = {}
 
-    output = subprocess.check_output(["ps", "auxww"]).decode("utf-8")
+    output = check_output(["ps", "auxww"]).decode("utf-8")
     outarr = output.split("\n")[1:-1]
 
     for i in outarr:
@@ -20,25 +20,28 @@ if __name__ == "__main__":
         out = re.search(r"([a-z,A-Z,0-9]+)\s+(\d*)\s+(\d*.\d*)\s+(\d*.\d*)(.*)",i)
 
         proc = process.Process(out.group(2),out.group(3),out.group(4)).getProcess()
-        print (proc[0],proc[1])
         processes[proc[0]] = proc[1]
 
 
-    for i in range(0,10):
-        output = subprocess.check_output(["ps", "auxww"]).decode("utf-8")
+    for i in range(0,100):
+        output = check_output(["ps", "auxww"]).decode("utf-8")
         outarr = output.split("\n")[1:-1]
 
+        print(len(outarr))
         for j in outarr:
-    #        print(i)
             try:
                 out = re.search(r"([a-z,A-Z,0-9]+)\s+(\d*)\s+(\d*.\d*)\s+(\d*.\d*)\s+([a-zA-Z0-9\<\>\[\]?\s]*)",j)
 
-                proc = processes[int(out.group(2))]
-                proc.addStat(out.group(3),out.group(4))
+                try:
+                    proc = processes[int(out.group(2))]
+                    proc.addStat(out.group(3),out.group(4))
+                except:
+                    proc = process.Process(out.group(2),out.group(3),out.group(4)).getProcess()
+                    processes[proc[0]] = proc[1]
 
             except Exception as exp:
-
-                print(exp)
+                print("exception")
+                print(repr(exp))
                 print(repr(j))
                 print(out.group(2))
                 print(out.group(3))
@@ -50,6 +53,16 @@ if __name__ == "__main__":
         time.sleep(1)
     for i in processes:
         print(i, processes[i].getCpu())
+        #pass
 
+    plotPID = int(raw_input("plot pid:"))
+
+    #plotPID = 10
+    if plotPID > 0:
+        try:
+            processes[plotPID].plot(str(plotPID) + ".png")
+        except Exception as exp:
+            print(exp)
     print(os.getcwd())
-    print("finished")
+
+
