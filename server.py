@@ -25,9 +25,7 @@ class MyHandler(BaseHTTPRequestHandler):
             if self.path.endswith(".psp"):
                 fi = os.path.normpath(baseFolder+self.path)
                 if os.path.isfile(fi):
-                    print "python "+fi
-                    fiout = check_output("python "+ fi)
-                    print fiout
+                    fiout = check_output(["python", fi])
                     self.send_response(200)
                     self.send_header('Content-type',	'text/html')
                     self.end_headers()
