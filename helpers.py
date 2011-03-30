@@ -3,6 +3,10 @@
 __author__="pharno"
 __date__ ="$26.03.2011 23:00:00$"
 
+global processes
+processes = {}
+global figureid
+figureid = 0
 
 import subprocess
 

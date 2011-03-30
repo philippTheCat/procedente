@@ -3,7 +3,7 @@
 __author__="pharno"
 __date__ ="$23.03.2011 21:03:58$"
 
-import helpers
+from helpers import *
 import re
 import matplotlib.pyplot as plot
 
@@ -40,24 +40,28 @@ class Process:
         return self.cpu
 
     def plot(self,toFile):
-        if len(self.cpu) > 100:
-            plotCPU = self.cpu[-100:]        
-            plotLenCpu = range(len(self.cpu)-100,len(self.cpu))
+        if len(self.cpu) > 1000:
+            plotCPU = self.cpu[-1000:]        
+            plotLenCpu = range(len(self.cpu)-1000,len(self.cpu))
         else:
             plotCPU = self.cpu
             plotLenCpu = range(0,len(self.cpu))
 
-        if len(self.ram) > 100:
-            plotRam = self.ram[-100:]        
-            plotLenRam = range(len(self.ram)-100,len(self.ram))
+        if len(self.ram) > 1000:
+            plotRam = self.ram[-1000:]        
+            plotLenRam = range(len(self.ram)-1000,len(self.ram))
         else:
             plotRam = self.ram
             plotLenRam = range(0,len(self.ram))
 
-        plot.plot([0],[100])
-        plot.plot([100],[0])
-        plot.plot(plotLenCpu,plotCPU, label = "cpu")        
-        plot.plot(plotLenRam,plotRam, label = "ram")
+        print len(plotCPU),len(plotLenCpu),len(plotRam),len(plotLenRam)
+        global figureid
+        plot.figure(figureid)
+        figureid +=1
+        plot.plot([0],[0])
+        plot.plot([1000],[100])
+        plot.plot(plotCPU, label = "cpu")        
+        plot.plot(plotRam, label = "ram")
         plot.legend()
         #print(dir(plot))
         #plot.set_title(str(self.pid))

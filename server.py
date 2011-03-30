@@ -11,7 +11,7 @@ from os import curdir
 import os
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from helpers import *
-
+from threading import Thread
 
 baseFolder = os.path.join(os.getcwd(),"site/")
 
@@ -31,7 +31,22 @@ class MyHandler(BaseHTTPRequestHandler):
                     self.end_headers()
                     self.wfile.write(fiout)
                 return
-                
+            if self.path.endswith(".png"):
+                try:
+                    pid = self.path[1:-4]
+                    #global processes
+                    global processes
+                    proc = processes[int(pid)]
+                    proc.plot("pics" + self.path)
+                    plotimg = open("pics"+self.path)
+                    self.send_response(200)
+                    self.send_header('Content-type',	'image/jpeg')
+                    self.end_headers()
+                    self.wfile.write(plotimg.read())
+                    print self.path
+                except Exception as exp:
+                    print repr(exp)
+                return
             return
                 
         except IOError:
@@ -55,15 +70,35 @@ class MyHandler(BaseHTTPRequestHandler):
         except :
             pass
 
+class procedenteServer(Thread):
+    def __init__(self,port,handler):
+        Thread.__init__(self)
+        self.server = HTTPServer(('', port),handler)
+    def run(self):
+        try:
+            self.server.serve_forever()
+        except Exception as exp:
+            print exp
+    def close(self):
+        self.server.socket.close()
+        Thread.interrupt_main()
+
 def main():
     try:
-        server = HTTPServer(('', 1337), MyHandler)
+#        server = HTTPServer(('', 1337), MyHandler)
+        server = procedenteServer(1337,MyHandler)
+        server.start()
         print 'started httpserver...'
-        server.serve_forever()
-        print "asdf"
-    except KeyboardInterrupt:
-        print '^C received, shutting down server'
-        server.socket.close()
+#        server.serve_forever()
+        while True:
+            inp = raw_input("quit? [Y/n]:")
+            if inp == "Y" or inp == "y" or inp == "\n":
+                #pass
+                server.close()
+    except Exception as exp:
+        print exp
+        print 'shutting down server'
+        print "exiting"
 
 if __name__ == '__main__':
     main()
