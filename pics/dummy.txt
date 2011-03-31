@@ -1,0 +1,7 @@
+This file forces Git to create this empty folder.
+If you are just a normal user or a package maintainer
+you may safely delete this file.
+=============================================================
+Diese Datei zwingt Git dazu diesen leeren Ordner zu erstellen.
+Wenn du nur ein normaler Benutzer oder ein Paketverwalter bist,
+dann kann diese Datei ohne Probleme werden.
