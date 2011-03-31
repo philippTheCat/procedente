@@ -84,11 +84,12 @@ class procedenteServer(Thread):
         Thread.interrupt_main()
 
 def main():
+    serverPort = 1337
     try:
 #        server = HTTPServer(('', 1337), MyHandler)
-        server = procedenteServer(1337,MyHandler)
+        server = procedenteServer(serverPort,MyHandler)
         server.start()
-        print 'started httpserver...'
+        print 'started httpserver at http://localhost:{0}/'.format(serverPort)
 #        server.serve_forever()
         while True:
             inp = raw_input("quit? [Y/n]:")
