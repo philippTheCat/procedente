@@ -1,1 +1,3 @@
 *.pyc
+pics/*
+!pics/dummy.txt
