@@ -7,11 +7,19 @@ import process
 import re,time,os
 from server import *
 from helpers import *
+import signal
 #global processes
 
+def kill(signum,frame):
+    print "recieved signal",signum
+    global server
+    server.close()
+    print "server exited"
+    exit(0)
+
+signal.signal( signal.SIGINT, kill )
+
 if __name__ == "__main__":
-
-
 
     try:
 #        server = HTTPServer(('', 1337), MyHandler)
@@ -38,8 +46,9 @@ if __name__ == "__main__":
             processes[proc[0]] = proc[1]
 
 
-        print processes
-        for i in range(0,1000):
+        #print processes
+        #for i in range(0,1000):
+        while True:        
             #print len(processes)
             output = check_output(["ps", "auxww"]).decode("utf-8")
             outarr = output.split("\n")[1:-1]
@@ -75,20 +84,5 @@ if __name__ == "__main__":
         print 'shutting down server'
         server.close()
         print "exiting"
-
-
-    #for i in processes:
-     #   print(i, processes[i].getCpu())
-        #pass
-
-    #plotPID = int(raw_input("plot pid:"))
-
-    #plotPID = 10
-    #if plotPID > 0:
-     #   try:
-      #      processes[plotPID].plot(str(plotPID) + ".png")
-       # except Exception as exp:
-       #     print(exp)
-    #print(os.getcwd())
 
 

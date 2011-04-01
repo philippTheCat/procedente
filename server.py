@@ -12,6 +12,10 @@ import os
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 from helpers import *
 from threading import Thread
+from api import *
+from traceback import print_exception
+import sys
+
 
 baseFolder = os.path.join(os.getcwd(),"site/")
 
@@ -22,6 +26,12 @@ class MyHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         try:
+            #print self.path, " / " , self.path[1:4]
+            if self.path[1:4] == "api":
+                #print self.path[4:]
+                APIRequest(self,self.wfile,self.path[4:])
+                #print self.wfile.read()
+                return
             if self.path.endswith(".psp"):
                 fi = os.path.normpath(baseFolder+self.path)
                 if os.path.isfile(fi):
@@ -51,6 +61,13 @@ class MyHandler(BaseHTTPRequestHandler):
                 
         except IOError:
             self.send_error(404,'File Not Found: %s' % self.path)
+        except KeyboardInterrupt:
+            print "keyboard interrupt"
+            Thread.interrupt_main()
+        except Exception as exp:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            print_exception(exc_type, exc_value, exc_traceback,
+                              limit=10, file=sys.stdout)
      
 
     def do_POST(self):
@@ -78,10 +95,11 @@ class procedenteServer(Thread):
         try:
             self.server.serve_forever()
         except Exception as exp:
-            print exp
+            pass
+
+
     def close(self):
         self.server.socket.close()
-        Thread.interrupt_main()
 
 def main():
     serverPort = 1337
