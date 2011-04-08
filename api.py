@@ -46,7 +46,7 @@ class APIRequest:
         if MessageType == "json":
             indent = 4 if DebugFlag == True else 0
             #(DebugFlag)? indent = 4 : indent = 0
-            Message["status"] = 200
+            Message["status"] = code
             MessageString = json.dumps(Message,indent = indent)
             print MessageString
         else:
