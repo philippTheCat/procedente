@@ -33,9 +33,14 @@ class Process:
         return self.ram
 
     def addStat(self,cpu="",ram=""):
-        self.ram.append(ram)
-        self.cpu.append(cpu)
+        if len(self.ram) > 1000:
+		self.ram = self.ram[-1000:]
+	if len(self.cpu) > 1000:
+		self.cpu = self.cpu[-1000:]
 
+	self.ram.append(ram)
+        self.cpu.append(cpu)
+		
     def getCpu(self):
         return self.cpu
 
